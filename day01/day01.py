@@ -1,12 +1,12 @@
-f = open('input.txt', 'r')
+inputs = []
+with open('input.txt') as my_file:
+    for line in my_file:
+        inputs.append(int(line))
 
 count = 0
-
-previousLine = f.readline()
-
-for line in f:
-    if(line > previousLine):
+previousDepth = inputs[0]
+for i in inputs[1:]:
+    if(i > previousDepth):
         count += 1
-    previousLine = line
-
+    previousDepth = i
 print(count)
