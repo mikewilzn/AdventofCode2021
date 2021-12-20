@@ -1,22 +1,38 @@
-zero = [0]*12
-one = [0]*12
+numbers = []
+with open('example.txt') as my_file:
+    numbers = my_file.readlines()
 
-with open('input.txt') as my_file:
-    for line in my_file:
-        for i in range(len(line) - 1):
-            if(line[i] == '0'):
-                zero[i] += 1
-            else:
-                one[i] += 1
+bitCount = len(numbers[0]) - 1
+zero = [0]*bitCount
+one = [0]*bitCount
+
+for line in numbers:
+    for i in range(bitCount):
+        if(line[i] == '0'):
+            zero[i] += 1
+        else:
+            one[i] += 1
 
 gamma = 0
 epsilon = 0
 
-for i in range(12):
+for i in range(bitCount):
     if(one[i] > zero[i]):
-        gamma += 1 << 12 - i
+        gamma += 1 << bitCount - i - 1
     else:
-        epsilon += 1 << 12 - i
+        epsilon += 1 << bitCount - i - 1
 
-print(gamma)
-print(epsilon)
+print(gamma * epsilon)
+
+validOxygen = []
+validCO2 = []
+
+count = len(numbers)
+
+while(count > 1):
+    
+for i in range(len(numbers)):
+    if(zero[i] > one[i]):
+
+        for number in numbers:
+            if(number[i] == 0):
