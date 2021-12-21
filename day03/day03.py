@@ -22,46 +22,55 @@ for i in range(bit_count):
     else:
         epsilon += 1 << bit_count - i - 1
 
-print(gamma * epsilon)
+print("Power Consumption: " + str(gamma * epsilon))
 
 
 ##### Part 2 ######
 
-oxygen_criteria = []
-for i in range(len(zero)):
-    if(one[i] >= zero[i]):
-        oxygen_criteria.append(1)
-    else:
-        oxygen_criteria.append(0)
-
-oxygen_matches = [0]*len(numbers)
-
-print("Oxygen criteria: " + str(oxygen_criteria))
-
-for i in range(len(numbers)):
-    for j in range(len(numbers[i])-1):
-        if(int(numbers[i][j]) == oxygen_criteria[j]):
-            oxygen_matches[i] += 1
+def get_oxygen_criteria(array, check_bit):
+    zeros = 0
+    ones = 0
+    for num in array:
+        if(int(num[check_bit]) == 0):
+            zeros += 1
         else:
-            break
+            ones += 1
+    return 1 if ones >= zeros else 0
 
-print("Oxygen matches: " + str(oxygen_matches))
-
-co2_criteria = []
-for i in range(len(zero)):
-    if(one[i] < zero[i]):
-        co2_criteria.append(1)
-    else:
-        co2_criteria.append(0)
-
-co2_matches = [0]*len(numbers)
-
-for number in numbers:
-    for i in range(len(number)):
-        if(number[i] == co2_criteria[i]):
-            co2_matches[i] += 1
+def get_co2_criteria(array, check_bit):
+    zeros = 0
+    ones = 0
+    for num in array:
+        if(int(num[check_bit]) == 0):
+            zeros += 1
         else:
-            break
+            ones += 1
+    return 1 if ones < zeros else 0
 
-print("Oxygen rating: " + numbers[max(oxygen_matches)])
-print("CO2 rating: " + numbers[max(co2_matches)])
+
+def get_oxygen_rating(remaining_numbers, check_bit):
+    if(len(remaining_numbers) == 1):
+        return remaining_numbers[0]
+    else:
+        new_array = []
+        bit_criteria = get_oxygen_criteria(remaining_numbers, check_bit)
+        for num in remaining_numbers:
+            if(int(num[check_bit]) == bit_criteria):
+                new_array.append(num)
+        return get_oxygen_rating(new_array, check_bit + 1)
+
+def get_co2_rating(remaining_numbers, check_bit):
+    if(len(remaining_numbers) == 1):
+        return remaining_numbers[0]
+    else:
+        new_array = []
+        bit_criteria = get_co2_criteria(remaining_numbers, check_bit)
+        for num in remaining_numbers:
+            if(int(num[check_bit]) == bit_criteria):
+                new_array.append(num)
+        return get_co2_rating(new_array, check_bit + 1)
+
+oxygen_rating = int(get_oxygen_rating(numbers, 0), 2)
+co2_rating = int(get_co2_rating(numbers, 0), 2)
+
+print("Life support rating: " + str(oxygen_rating * co2_rating))
